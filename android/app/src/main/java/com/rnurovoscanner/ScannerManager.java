@@ -25,6 +25,17 @@ import java.util.Map;
 
 
 public class ScannerManager extends AppCompatActivity {
+    private void registerBarcodeReceiver(boolean register) {
+        Log.d(TAG, "ScannerBroadcastReceiver (private void registerReceiver)" );
+        if (register && mScanManager != null) {
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(ACTION_DECODE);
+            registerReceiver(mReceiver, filter);
+        } else if (mScanManager != null) {
+            mScanManager.stopDecode();
+            unregisterReceiver(mReceiver);
+        }
+    }
 
     private static final String TAG = "ScanManagerDemo";
     private static final boolean DEBUG = true;
@@ -61,17 +72,6 @@ public class ScannerManager extends AppCompatActivity {
             Log.d(TAG, "ScannerBroadcastReceiver: " + jsonString);
         }
     };
-    private void registerReceiver(boolean register) {
-        Log.d(TAG, "ScannerBroadcastReceiver (private void registerReceiver)" );
-        if (register && mScanManager != null) {
-            IntentFilter filter = new IntentFilter();
-            filter.addAction(ACTION_DECODE);
-            registerReceiver(mReceiver, filter);
-        } else if (mScanManager != null) {
-            mScanManager.stopDecode();
-            unregisterReceiver(mReceiver);
-        }
-    }
 
     private Handler mHandler = new Handler() {
         @Override
@@ -127,7 +127,7 @@ public class ScannerManager extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        registerReceiver(false);
+        registerBarcodeReceiver(false);
     }
 
     @Override
@@ -135,7 +135,7 @@ public class ScannerManager extends AppCompatActivity {
         Log.d(TAG, "ScannerBroadcastReceiver (private void onResume)" );
         super.onResume();
         initScan();
-        registerReceiver(true);
+        registerBarcodeReceiver(true);
     }
 
     @Override
