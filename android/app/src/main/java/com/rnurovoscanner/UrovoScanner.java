@@ -80,7 +80,7 @@ public class UrovoScanner extends ReactContextBaseJavaModule  implements Lifecyc
             String jsonString =  "{'length':'" + barcodeLen + "','barcode':'" + scanResult + "','barcode_string':'" + barcodeStr + "'}";
             Log.d(TAG, "ScannerBroadcastReceiver: " + jsonString);
 
-            sendEvent(getReactApplicationContext(), "BarcodeStremerUrovo", jsonString);
+            sendEvent(getReactApplicationContext(), "urovo_broadcast_intent", jsonString);
         }
     };
     @Override
@@ -123,7 +123,7 @@ public class UrovoScanner extends ReactContextBaseJavaModule  implements Lifecyc
             powerOn = mScanManager.openScanner();
 
         }
-        initBarcodeParameters();
+//        initBarcodeParameters();
     }
 
 
